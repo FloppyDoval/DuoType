@@ -1,0 +1,20 @@
+version: "3.5"
+
+services:
+  scripts:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    entrypoint: scripts/docker-entry.sh
+    environment:
+      - PYTHONUNBUFFERED=1
+    image: duo-mingle-web:scripts
+    # Kill container when stopping Jenkins jobs
+    init: true
+    # Don't create own network, as that causes issues on Jenkins
+    network_mode: bridge
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/code
+      - ~/.aws:/root/.aws

@@ -1,0 +1,25 @@
+@use "colors" as *;
+@use "typography" as typography;
+
+:root {
+  @include typography.typography-tokens;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+a {
+  color: web-ui-color("macaw");
+  font-weight: 700;
+  text-decoration: none;
+}
+
+body {
+  @include typography.text("body");
+  color: web-ui-color("eel");
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+}

@@ -1,0 +1,4 @@
+services:
+  scripts:
+    ports:
+      - "3000"

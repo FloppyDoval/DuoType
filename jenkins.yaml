@@ -1,0 +1,43 @@
+version: 2
+jobs:
+  - name: "duo-mingle-web"
+    description: |
+      Jenkins Job for Continuous Deployment
+    jenkins_cluster: "deployment-jenkins"
+    node: "ec2-jenkins-deployment-2023"
+    push: true
+    timeout: 60
+    command: "make build deploy-prod"
+    dockerize_command: false
+    slack:
+      notify_success: true
+      notify_failure: true
+      notify_repeated_failure: true
+      room: "ci"
+
+  - name: "duo-mingle-web-deploy-galaxy-stage"
+    description: |
+      Manually trigger this job to deploy to the `stage` Galaxy environment.
+    jenkins_cluster: "deployment-jenkins"
+    node: "ec2-jenkins-deployment-2023"
+    parameters:
+      - name: "BUILD_BRANCH"
+        default: "master"
+        type: "string"
+    branch: "${BUILD_BRANCH}"
+    timeout: 60
+    command: "make build deploy-stage"
+    dockerize_command: false
+
+  - name: "duo-mingle-web-pr"
+    description: |
+      Jenkins Job for Continuous Integration
+    jenkins_cluster: "pr-jenkins"
+    node: "ec2-jenkins-worker"
+    concurrent_builds: true
+    branch: "${sha1}"
+    refspec: "+refs/pull/*:refs/remotes/origin/pr/*"
+    trigger_phrase: "trigger ci"
+    command: "make ci"
+    dockerize_command: false
+    recipients: "${ghprbActualCommitAuthorEmail}"

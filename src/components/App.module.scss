@@ -1,0 +1,13 @@
+@use "styles/colors" as *;
+@use "styles/spacing" as *;
+
+.app {
+  // These are just example styles.
+  background: web-ui-color("snow");
+}
+
+.app-padded {
+  composes: app;
+  // These are just example styles.
+  padding: $duo-spacing-16;
+}

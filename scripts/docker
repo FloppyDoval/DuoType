@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# Runs the given command in Docker
+
+set -eu -o pipefail
+
+docker-compose build scripts
+docker-compose -f docker-compose.yaml -f docker-compose.ci.yaml run --rm --service-ports -e NODE_ENV scripts "$@"
